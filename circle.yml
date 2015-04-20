@@ -11,4 +11,4 @@ deployment:
   hub:
     branch: master
     commands:
-      - $DOCKERHUB_AUTOBUILD
+      - curl --data "build=true" -X POST "$DOCKERHUB_AUTOBUILD_URL"
