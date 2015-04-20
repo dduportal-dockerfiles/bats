@@ -69,9 +69,12 @@ We embed a set of basic packages :
 Do not hesitate to contribute by forking this repository
 
 Pick at least one :
-  * Implement tests in ```/tests/bats/```
-  * Write the Dockerfile
-  * (Re)Write the documentation corrections
+
+* Implement tests in ```/tests/bats/```
+
+* Write the Dockerfile
+
+* (Re)Write the documentation corrections
 
 
 Finnaly, open the Pull Request : CircleCi will automatically build and test for you
