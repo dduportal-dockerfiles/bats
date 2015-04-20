@@ -7,3 +7,8 @@ dependencies:
 test:
   override:
     - make test
+deployment:
+  hub:
+    branch: master
+    commands:
+      - $DOCKERHUB_AUTOBUILD
