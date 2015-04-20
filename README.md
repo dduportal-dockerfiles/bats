@@ -11,10 +11,12 @@ The idea is to use Docker's lightweight isolation to have an auto-sufficient ima
 ## Usage
 
 From here, just pre-download the image from the registry :
+
 ```
 $ docker pull dduportal/bats:0.4.0
-# It is strongly recommended to use tags, even if dduportal/bats will work as latest tag is implied
 ```
+
+It is strongly recommended to use tags, even if dduportal/bats will work as latest tag is implied.
 
 Then you have to choices : running directly your test or build your own, which enable you to embed your tests.
 
@@ -34,14 +36,42 @@ $ docker run \
 The goal here is to embed to tests in order to version them or share them, and providing the 'all-in-one' box (e.g. bats + deps. + your tests) as a Docker image artefact :
 
 
-*TODO*
-
 ```
 $ cat Dockerfile
+FROM dduportal/bats:0.4.0
+MAINTAINER <your name>
+ADD ./your-tests /app/bats-tests
+RUN apk install --update <your dependencies>
+CMD ["/app/bats-tests/"]
+$ docker build -t my-tests ./
+...
+$ docker run -t my-tests
+...
 ```
 
 ## Image content and considerations
 
+### Base image
 
-*TODO*
+Since this image just need bats and little dependencies, we use [Alpine Linux](https://registry.hub.docker.com/_/alpine/) as a base image :
+* It is a light image (~5 Mb)
+* It embed an usefull and complete package manager : [apk](http://wiki.alpinelinux.org/wiki/Alpine_Linux_package_management) which has [a lot of available packages](http://forum.alpinelinux.org/packages)
 
+### Already installed package
+
+We embed a set of basic packages :
+* bash : It's a bats dependency,
+* make : since I use Makefile for building and testing my Docker images,
+* curl (and ca-certificates): because the default embeded wget does not handle HTTPS 
+
+## Contributing
+
+Do not hesitate to contribute by forking this repository
+
+Pick at least one :
+  * Implement tests in ```/tests/bats/```
+  * Write the Dockerfile
+  * (Re)Write the documentation corrections
+
+
+Finnaly, open the Pull Request : CircleCi will automatically build and test for you
