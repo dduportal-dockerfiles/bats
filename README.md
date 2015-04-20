@@ -6,6 +6,8 @@ That image embed [bats](https://github.com/sstephenson/bats), a bash-testing fra
 
 The idea is to use Docker's lightweight isolation to have an auto-sufficient image that embed bats and its dependencies, even if it only need bash as dependency...
 
+[![CircleCi Build Status](https://circleci.com/gh/dduportal-dockerfiles/bats.svg?&style=shield&circle-token=a7fd546c08f8c0a1bf0ff211b07d14f204e65be1)](https://circleci.com/gh/dduportal-dockerfiles/bats)
+
 ## Usage
 
 From here, just pre-download the image from the registry :
