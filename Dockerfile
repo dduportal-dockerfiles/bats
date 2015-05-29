@@ -1,4 +1,4 @@
-FROM alpine:3.1
+FROM alpine:3.2
 MAINTAINER Damien DUPORTAL <damien.duportal@gmail.com>
 
 ENV BATS_VERSION 0.4.0
