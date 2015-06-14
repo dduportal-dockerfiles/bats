@@ -1,6 +1,6 @@
 .PHONY: build test all
 
-DOCKER_IMAGE_NAME=local-bats
+DOCKER_IMAGE_NAME=dduportal/bats
 
 all: build test
 
@@ -14,5 +14,5 @@ test:
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-e DOCKER_HOST=unix:///var/run/docker.sock \
 		-e DOCKER_IMAGE_NAME=$(DOCKER_IMAGE_NAME) \
-		dduportal/bats:0.4.0 \
+		dduportal/bats \
 			/app/tests/bats/
