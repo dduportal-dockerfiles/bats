@@ -1,6 +1,6 @@
 .PHONY: build test all
 
-DOCKER_IMAGE_NAME=local-bats
+DOCKER_IMAGE_NAME=dduportal/bats
 
 all: build test
 

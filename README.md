@@ -53,9 +53,8 @@ $ docker run -t my-tests
 
 ### Base image
 
-Since this image just need bats and little dependencies, we use [Alpine Linux](https://registry.hub.docker.com/_/alpine/) as a base image :
-* It is a light image (~5 Mb)
-* It embed an usefull and complete package manager : [apk](http://wiki.alpinelinux.org/wiki/Alpine_Linux_package_management) which has [a lot of available packages](http://forum.alpinelinux.org/packages)
+This image is built upom debian image, to have a balance beetween size and customization.
+It also avoid aving sendfile caching bug when using with virtualbox (default boot2docker hypervisor) shared folder (See https://www.virtualbox.org/ticket/12597 )
 
 ### Already installed package
 
