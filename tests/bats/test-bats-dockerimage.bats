@@ -2,9 +2,7 @@
 
 BATS_VERSION=0.4.0
 @test "With no cmd/args, the image return Bats version" {
-	run docker run -t "${DOCKER_IMAGE_NAME}"
-	[ "$status" -eq 0 ]
-	[ "${output:0:4}" == "Bats" ]
+	docker run -t "${DOCKER_IMAGE_NAME}" | grep "Bats" | grep "${BATS_VERSION}"
 }
 
 DEBIAN_VERSION=8.2
