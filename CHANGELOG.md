@@ -1,5 +1,8 @@
 # Bats Docker Image CHANGELOG
 
+## 2015-12-08
+* Upgrading to latest debian 8.2
+
 ## 2015-06-14
 * Moving base image to debian 8.1 to avoid sendfile problems
 
