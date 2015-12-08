@@ -2,15 +2,12 @@
 
 BATS_VERSION=0.4.0
 @test "With no cmd/args, the image return Bats version" {
-	run docker run -t "${DOCKER_IMAGE_NAME}"
-	[ "$status" -eq 0 ]
-	[ "${output:0:4}" == "Bats" ]
+	docker run -t "${DOCKER_IMAGE_NAME}" | grep "Bats" | grep "${BATS_VERSION}"
 }
 
-DEBIAN_VERSION=8.1
+DEBIAN_VERSION=8.2
 @test "We use the debian linux version ${DEBIAN_VERSION}" {
 	[ $(docker run --entrypoint sh "${DOCKER_IMAGE_NAME}" -c "grep \"${DEBIAN_VERSION}\" /etc/debian_version | wc -l") -eq 1 ]
-
 }
 
 @test "A sample bats test" {
