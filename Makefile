@@ -20,4 +20,4 @@ test:
 		-e DOCKER_IMAGE_NAME \
 		-e BATS_VERSION \
 		$(DOCKER_IMAGE_NAME):$(BATS_VERSION) \
-			/app/tests/bats/
+			/app/tests/

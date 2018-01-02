@@ -1,13 +1,15 @@
 #!/usr/bin/env bats
 
-BATS_VERSION=0.4.0
+# load "${BATS_LIBS}/bats-support/load.bash"
+# load "${BATS_LIBS}/bats-assert/load.bash"
+
 @test "With no cmd/args, the image return Bats version" {
 	docker run -t "${DOCKER_IMAGE_NAME}" | grep "Bats" | grep "${BATS_VERSION}"
 }
 
-DEBIAN_VERSION=8.2
-@test "We use the debian linux version ${DEBIAN_VERSION}" {
-	[ $(docker run --entrypoint sh "${DOCKER_IMAGE_NAME}" -c "grep \"${DEBIAN_VERSION}\" /etc/debian_version | wc -l") -eq 1 ]
+OS_VERSION=3.7
+@test "Base OS is Alpine Linux v${OS_VERSION}" {
+	[ $(docker run --entrypoint sh "${DOCKER_IMAGE_NAME}" -c "grep -c \"${OS_VERSION}\" /etc/os-release") -eq 1 ]
 }
 
 @test "A sample bats test" {
@@ -18,10 +20,6 @@ DEBIAN_VERSION=8.2
 
 @test "Bash is installed" {
 	docker run --entrypoint sh "${DOCKER_IMAGE_NAME}" -c "which bash"
-}
-
-@test "Make is installed" {
-	docker run --entrypoint sh "${DOCKER_IMAGE_NAME}" -c "which make"
 }
 
 @test "Curl is installed" {

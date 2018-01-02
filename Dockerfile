@@ -1,7 +1,8 @@
 FROM alpine:3.7
 LABEL Maintainer="Damien DUPORTAL <damien.duportal@gmail.com>"
 
-ENV BATS_VERSION 0.4.0
+ARG bats_version=0.4.0
+ENV BATS_VERSION=${bats_version}
 
 WORKDIR /tests
 
