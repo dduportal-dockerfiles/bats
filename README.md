@@ -2,78 +2,92 @@
 
 ## Description
 
-That image embed [bats](https://github.com/sstephenson/bats), a bash-testing framework.
+That image embed [bats](https://github.com/bats-core/bats-core),
+a bash-testing framework.
 
-The idea is to use Docker's lightweight isolation to have an auto-sufficient image that embed bats and its dependencies, even if it only need bash as dependency...
+The idea is to use Docker's lightweight isolation
+to have a self-contained image embedding bats,
+any dependency, and all your tests.
 
-[![CircleCi Build Status](https://circleci.com/gh/dduportal-dockerfiles/bats.svg?&style=shield&circle-token=a7fd546c08f8c0a1bf0ff211b07d14f204e65be1)](https://circleci.com/gh/dduportal-dockerfiles/bats)
+[![Build Status](https://travis-ci.org/dduportal-dockerfiles/bats.svg?branch=master)](https://travis-ci.org/dduportal-dockerfiles/bats)
 
 ## Usage
 
-From here, just pre-download the image from the registry :
+Pull the image from the DockerHub registry:
 
 ```
-$ docker pull dduportal/bats:0.4.0
+docker pull dduportal/bats:0.4.0
 ```
 
-It is strongly recommended to use tags, even if dduportal/bats will work as latest tag is implied.
+Then you have 2 usages explained below:
 
-Then you have to choices : running directly your test or build your own, which enable you to embed your tests.
+* *Run time execution*: Run your tests with `docker run`
+  - It requires mounting a folder inside the container
+* *Build time execution*: Build your own image,
+by extending this image
+  - It requires to have a `docker build` / `docker run` workflow
 
-### Inline run
+### Run time execution
 
-You just have to share your bats' tests directory inside the container and provide it to bats entrypoint as ```docker run``` argument :
+* Share your test directory inside the container,
+and provide it to bats entrypoint as a `docker run` argument:
 
 ```
-$ docker run \
+docker run \
 	-v /path/to/the/folder/storing/your/tests:/my-tests \
 	dduportal/bats:0.4.0 \
 		/my-tests
 ```
 
-### Build your own testing image
+### Build time execution
 
-The goal here is to embed to tests in order to version them or share them, and providing the 'all-in-one' box (e.g. bats + deps. + your tests) as a Docker image artefact :
+Build your own Docker image from a custom `Dockerfile`,
+extending this base image.
 
+Please check this `Dockerfile` example below:
 
 ```
 $ cat Dockerfile
 FROM dduportal/bats:0.4.0
-MAINTAINER <your name>
-ADD ./your-tests /app/bats-tests
-RUN apk install --update <your dependencies>
-CMD ["/app/bats-tests/"]
+LABEL Maintainer="<insert your name here>"
+
+COPY ./your-test-directory /tests
+
+# Optional:
+RUN apk add --no-cache <your dependencies>
+
+CMD ["/your-test-directory"]
 $ docker build -t my-tests ./
 ...
 $ docker run -t my-tests
 ...
 ```
 
-## Image content and considerations
-
-### Base image
-
-This image is built upom debian image, to have a balance beetween size and customization.
-It also avoid aving sendfile caching bug when using with virtualbox (default boot2docker hypervisor) shared folder (See https://www.virtualbox.org/ticket/12597 )
-
-### Already installed package
-
-We embed a set of basic packages :
-* bash : It's a bats dependency,
-* make : since I use Makefile for building and testing my Docker images,
-* curl (and ca-certificates): because the default embeded wget does not handle HTTPS 
-
 ## Contributing
 
-Do not hesitate to contribute by forking this repository
+Contributions are welcome!
+It is based on the free time you have to help:
 
-Pick at least one :
+### I have 1 minute
 
-* Implement tests in ```/tests/bats/```
+* Simply an issue describing your challenge/problem/bug,
+or the goal you want to achieve
 
-* Write the Dockerfile
+### I have 1 hour
 
-* (Re)Write the documentation corrections
-
-
-Finnaly, open the Pull Request : CircleCi will automatically build and test for you
+* Open an issue (see "I have 1 minute")
+* Ensure you have on your machine:
+  - [Docker](https://www.docker.com/),
+  - Bash and GNU Make (the command `make`)
+  - Git
+* Fork this repository
+* Clone your fork on your machine
+* Write test(s) in `/tests/`
+* (Re)Write the Dockerfile
+* (Re)Write the documentation if needed
+* Run `make all`
+* If NOT OK, fix and iterate
+* If OK, commit and push
+* Finally, open a Pull Request with a link to the issue
+you had raised earlier
+  - The CI system will automatically build and test for you providing feedback
