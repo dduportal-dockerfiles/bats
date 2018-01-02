@@ -1,17 +1,19 @@
-FROM debian:8.2
-MAINTAINER Damien DUPORTAL <damien.duportal@gmail.com>
+FROM alpine:3.7
+LABEL Maintainer="Damien DUPORTAL <damien.duportal@gmail.com>"
 
 ENV BATS_VERSION 0.4.0
-ENV DEBIAN_FRONTEND noninteractive
 
-RUN apt-get update -q \
-	&& apt-get install -y -q --no-install-recommends bash make curl ca-certificates \
-	&& curl -o "/tmp/v${BATS_VERSION}.tar.gz" -L \
-		"https://github.com/sstephenson/bats/archive/v${BATS_VERSION}.tar.gz" \
-	&& tar -x -z -f "/tmp/v${BATS_VERSION}.tar.gz" -C /tmp/ \
-	&& bash "/tmp/bats-${BATS_VERSION}/install.sh" /usr/local \
-	&& rm -rf /tmp/*
+WORKDIR /tests
 
-ENTRYPOINT ["/usr/local/bin/bats"]
+RUN apk add --no-cache \
+    bash \
+    curl \
+  && curl -sSL -o "/tmp/v${BATS_VERSION}.tgz" \
+    "https://github.com/bats-core/bats-core/archive/v${BATS_VERSION}.tar.gz" \
+  && tar -xzf "/tmp/v${BATS_VERSION}.tgz" -C /tmp/ \
+  && bash "/tmp/bats-core-${BATS_VERSION}/install.sh" /opt/bats \
+  && ln -s /opt/bats/libexec/bats /sbin/bats
+
+ENTRYPOINT ["/sbin/bats"]
 
 CMD ["-v"]
