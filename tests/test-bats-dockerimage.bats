@@ -3,6 +3,10 @@
 # load "${BATS_LIBS}/bats-support/load.bash"
 # load "${BATS_LIBS}/bats-assert/load.bash"
 
+@test "I can install docker CLI on the image" {
+  apk add --no-cache docker
+}
+
 @test "With no cmd/args, the image return Bats version" {
 	docker run --rm -t "${DOCKER_IMAGE_NAME}" | grep "Bats" | grep "${BATS_VERSION}"
 }

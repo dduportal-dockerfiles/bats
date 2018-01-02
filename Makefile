@@ -14,14 +14,13 @@ build:
 test:
 	docker run \
 		--rm \
-		-v $(CURDIR):/app \
-		-v $$(which docker):$$(which docker) \
+		-v $(CURDIR)/tests:/tests \
 		-v /var/run/docker.sock:/docker.sock \
 		-e DOCKER_HOST="unix:///docker.sock" \
 		-e DOCKER_IMAGE_NAME \
 		-e BATS_VERSION \
 		$(DOCKER_IMAGE_NAME):$(BATS_VERSION) \
-			/app/tests/
+			/tests/
 
 deploy:
 	curl -H "Content-Type: application/json" \
