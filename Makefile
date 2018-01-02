@@ -1,13 +1,14 @@
 .PHONY: build test deploy all
 
 export DOCKER_IMAGE_NAME ?= dduportal/bats
+export DOCKER_IMAGE_TAG ?= $(shell git rev-parse --short HEAD)
 export BATS_VERSION ?= 0.4.0
 
 all: build test
 
 build:
 	docker build \
-		--tag $(DOCKER_IMAGE_NAME):$(BATS_VERSION) \
+		--tag $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) \
 		--build-arg BATS_VERSION=$(BATS_VERSION) \
 		./
 

@@ -3,8 +3,15 @@
 # load "${BATS_LIBS}/bats-support/load.bash"
 # load "${BATS_LIBS}/bats-assert/load.bash"
 
+CUSTOM_DOCKER_RUN_OPTS=""
+
+run_command_with_docker() {
+  docker run --rm -t ${CUSTOM_DOCKER_RUN_OPTS} \
+    "${DOCKER_IMAGE_NAME}:${DOCKER_IMAGE_TAG}" "$@"
+}
+
 @test "With no cmd/args, the image return Bats version" {
-	docker run --rm -t "${DOCKER_IMAGE_NAME}" | grep "Bats" | grep "${BATS_VERSION}"
+	run_command_with_docker | grep "Bats" | grep "${BATS_VERSION}"
 }
 
 OS_VERSION=3.7
