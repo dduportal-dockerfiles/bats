@@ -1,7 +1,6 @@
 #!/usr/bin/env bats
 
-# load "${BATS_LIBS}/bats-support/load.bash"
-# load "${BATS_LIBS}/bats-assert/load.bash"
+BATS_VERSION=0.4.0
 
 run_command_with_docker() {
   docker run --rm -t ${CUSTOM_DOCKER_RUN_OPTS} \
@@ -14,6 +13,26 @@ setup() {
 
 @test "With no cmd/args, the image return Bats version" {
 	run_command_with_docker | grep "Bats" | grep "${BATS_VERSION}"
+}
+
+@test "Environment variable for Bats Helper is set and valid" {
+  local CUSTOM_DOCKER_RUN_OPTS="--entrypoint bash"
+  run_command_with_docker -c 'test -d "${BATS_HELPERS_DIR}"'
+}
+
+@test "ztombol's bats-support helpers is installed" {
+  local CUSTOM_DOCKER_RUN_OPTS="--entrypoint bash"
+  run_command_with_docker -c 'test -e "${BATS_HELPERS_DIR}/bats-support/load.bash"'
+}
+
+@test "ztombol's bats-file helpers is installed" {
+  local CUSTOM_DOCKER_RUN_OPTS="--entrypoint bash"
+  run_command_with_docker -c 'test -e "${BATS_HELPERS_DIR}/bats-file/load.bash"'
+}
+
+@test "ztombol's bats-assert helpers is installed" {
+  local CUSTOM_DOCKER_RUN_OPTS="--entrypoint bash"
+  run_command_with_docker -c 'test -e "${BATS_HELPERS_DIR}/bats-assert/load.bash"'
 }
 
 @test "Base OS is using Alpine Linux" {
@@ -29,9 +48,4 @@ setup() {
 @test "Bash is installed" {
   local CUSTOM_DOCKER_RUN_OPTS="--entrypoint which"
 	run_command_with_docker bash
-}
-
-@test "Curl is installed" {
-  local CUSTOM_DOCKER_RUN_OPTS="--entrypoint which"
-	run_command_with_docker curl
 }

@@ -2,7 +2,6 @@
 
 export DOCKER_IMAGE_NAME ?= dduportal/bats
 export DOCKER_IMAGE_TAG ?= $(shell git rev-parse --short HEAD)
-export BATS_VERSION ?= 0.4.0
 
 CURRENT_GIT_BRANCH ?= $(shell git rev-parse --abbrev-ref HEAD)
 
@@ -11,7 +10,6 @@ all: build test
 build:
 	docker build \
 		--tag $(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_TAG) \
-		--build-arg BATS_VERSION=$(BATS_VERSION) \
 		./
 
 test:

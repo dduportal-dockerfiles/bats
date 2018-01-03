@@ -1,0 +1,14 @@
+{
+  "name": "dduportal-bats",
+  "version": "1.0.0",
+  "description": "This file is use for dependency management only and will never be used on the end Docker image",
+  "private": "true",
+  "author": "Damien DUPORTAL <damien.duportal@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "bats": "^0.4.2",
+    "bats-support": "git+https://github.com/ztombol/bats-support.git#v0.3.0",
+    "bats-assert": "git+https://github.com/ztombol/bats-assert.git#v0.3.0",
+    "bats-file": "git+https://github.com/ztombol/bats-file.git#v0.2.0"
+  }
+}

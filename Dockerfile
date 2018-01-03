@@ -1,19 +1,30 @@
+
+# We use npm for dependency management
+FROM node:alpine as dependencies-solver
+RUN apk add --no-cache git
+COPY package*.json /bats/
+WORKDIR /bats
+RUN npm install
+
+# Minimalistic image
 FROM alpine:3.7
 LABEL Maintainer="Damien DUPORTAL <damien.duportal@gmail.com>"
+ENV BATS_HELPERS_DIR=/opt/bats-helpers
 
-ARG bats_version=0.4.0
-ENV BATS_VERSION=${bats_version}
+# Bats
+COPY --from=dependencies-solver /bats/node_modules/bats /opt/bats
+
+# ztombol's bats helpers
+COPY --from=dependencies-solver /bats/node_modules/bats-support /opt/bats-helpers/bats-support
+COPY --from=dependencies-solver /bats/node_modules/bats-file /opt/bats-helpers/bats-file
+COPY --from=dependencies-solver /bats/node_modules/bats-assert /opt/bats-helpers/bats-assert
+
+
+RUN apk add --no-cache bash \
+  && ln -s /opt/bats/libexec/bats /sbin/bats
 
 WORKDIR /tests
 
-RUN apk add --no-cache \
-    bash \
-    curl \
-  && curl -sSL -o "/tmp/v${BATS_VERSION}.tgz" \
-    "https://github.com/bats-core/bats-core/archive/v${BATS_VERSION}.tar.gz" \
-  && tar -xzf "/tmp/v${BATS_VERSION}.tgz" -C /tmp/ \
-  && bash "/tmp/bats-core-${BATS_VERSION}/install.sh" /opt/bats \
-  && ln -s /opt/bats/libexec/bats /sbin/bats
 
 ENTRYPOINT ["/sbin/bats"]
 
