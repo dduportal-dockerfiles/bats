@@ -15,6 +15,16 @@ setup() {
 	run_command_with_docker | grep "Bats" | grep "${BATS_VERSION}"
 }
 
+@test "Bash is installed" {
+  local CUSTOM_DOCKER_RUN_OPTS="--entrypoint which"
+	run_command_with_docker bash
+}
+
+@test "mktemp accepts the long flag --directory" {
+  local CUSTOM_DOCKER_RUN_OPTS="--entrypoint bash"
+  run_command_with_docker -c 'mktemp --directory'
+}
+
 @test "Environment variable for Bats Helper is set and valid" {
   local CUSTOM_DOCKER_RUN_OPTS="--entrypoint bash"
   run_command_with_docker -c 'test -d "${BATS_HELPERS_DIR}"'
@@ -43,9 +53,4 @@ setup() {
 @test "We can run a sample test at run time by mounting it" {
   local CUSTOM_DOCKER_RUN_OPTS="-v $(pwd)/sample:/tests"
 	run_command_with_docker /tests/
-}
-
-@test "Bash is installed" {
-  local CUSTOM_DOCKER_RUN_OPTS="--entrypoint which"
-	run_command_with_docker bash
 }
