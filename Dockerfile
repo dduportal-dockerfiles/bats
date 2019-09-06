@@ -7,7 +7,7 @@ WORKDIR /bats
 RUN npm install
 
 # Minimalistic image
-FROM alpine:3.7
+FROM alpine:3.10
 LABEL Maintainer="Damien DUPORTAL <damien.duportal@gmail.com>"
 ENV BATS_HELPERS_DIR=/opt/bats-helpers
 
@@ -20,7 +20,7 @@ COPY --from=dependencies-solver /bats/node_modules/bats-file /opt/bats-helpers/b
 COPY --from=dependencies-solver /bats/node_modules/bats-assert /opt/bats-helpers/bats-assert
 
 
-RUN apk add --no-cache bash \
+RUN apk add --no-cache bash coreutils \
   && ln -s /opt/bats/libexec/bats /sbin/bats
 
 WORKDIR /tests
