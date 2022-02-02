@@ -20,11 +20,13 @@ COPY --from=dependencies-solver /bats/node_modules/bats-file /opt/bats-helpers/b
 COPY --from=dependencies-solver /bats/node_modules/bats-assert /opt/bats-helpers/bats-assert
 
 
-RUN apk add --no-cache bash coreutils \
-  && ln -s /opt/bats/libexec/bats /sbin/bats
+RUN apk add --no-cache bash coreutils
+
+WORKDIR /opt/bats
+RUN ./install.sh /sbin
+RUN ln -s /sbin/bin/bats /sbin/bats
 
 WORKDIR /tests
-
 
 ENTRYPOINT ["/sbin/bats"]
 
