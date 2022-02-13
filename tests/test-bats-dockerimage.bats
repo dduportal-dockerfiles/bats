@@ -1,6 +1,6 @@
 #!/usr/bin/env bats
 
-BATS_VERSION=0.4.0
+BATS_VERSION=1.5.0
 
 run_command_with_docker() {
   docker run --rm -t ${CUSTOM_DOCKER_RUN_OPTS} \
@@ -51,6 +51,6 @@ setup() {
 }
 
 @test "We can run a sample test at run time by mounting it" {
-  local CUSTOM_DOCKER_RUN_OPTS="-v $(pwd)/sample:/tests"
-	run_command_with_docker /tests/
+  local CUSTOM_DOCKER_RUN_OPTS="-v $(pwd):/tests"
+	run_command_with_docker /samples
 }
